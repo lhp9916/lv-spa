@@ -7,8 +7,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
+
+                    <router-link to="/register" tag="li">
+                        <a>注册</a>
+                    </router-link>
+
                     <router-link to="/about" tag="li">
-                        <a>About</a>
+                        <a>关于</a>
                     </router-link>
 
                 </ul>
