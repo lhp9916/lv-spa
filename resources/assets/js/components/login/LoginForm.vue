@@ -1,0 +1,66 @@
+<template>
+    <form class="form-horizontal" @submit.prevent="login">
+
+        <div class="form-group" :class="{ 'has-error':errors.has('email')}">
+            <label for="email" class="col-md-4 control-label">邮箱</label>
+
+            <div class="col-md-7">
+                <input id="email" type="email" class="form-control" name="email"
+                       v-validate data-vv-rules="required|email" data-vv-as="E-Mail 地址"
+                       v-model="email" required>
+                <span class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
+            </div>
+        </div>
+
+        <div class="form-group" :class="{ 'has-error':errors.has('password')}">
+            <label for="password" class="col-md-4 control-label">密码</label>
+
+            <div class="col-md-7">
+                <input id="password" type="password" class="form-control"
+                       v-validate data-vv-rules="required|min: 6" data-vv-as="密码"
+                       v-model="password" name="password" required>
+                <span class="help-block" v-show="errors.has('password')">{{ errors.first('password') }}</span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-7 col-md-offset-4">
+                <button type="submit" class="btn btn-primary">
+                    登录
+                </button>
+            </div>
+        </div>
+    </form>
+
+</template>
+
+<script>
+    import JwtToken from './../../helpers/jwt'
+    import jwt from "../../helpers/jwt";
+
+    export default {
+        data() {
+            return {
+                email: '',
+                password: '',
+            }
+        },
+        methods: {
+            login() {
+                let formData = {
+                    client_id: '2',
+                    client_secret: 'HraV57TrDC3O3ePv6yXJcEpDJeMOk2S739uzHJLr',
+                    grant_type: 'password',
+                    scope: '',
+                    username: this.email,
+                    password: this.password,
+                }
+                axios.post('/oauth/token', formData).then(response => {
+                    //保存 access_token
+                    jwt.setToken(response.data.access_token)
+                })
+            },
+        }
+    }
+</script>

@@ -18,6 +18,9 @@ let routes = [
         path: '/confirm',
         name: 'confirm',
         component: require('./components/comfirm/Email')
+    },{
+        path: '/login',
+        component: require('./components/login/Login')
     }
 ]
 

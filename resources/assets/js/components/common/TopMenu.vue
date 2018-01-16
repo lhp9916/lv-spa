@@ -12,8 +12,8 @@
                         <a>注册</a>
                     </router-link>
 
-                    <router-link to="/about" tag="li">
-                        <a>关于</a>
+                    <router-link to="/login" tag="li">
+                        <a>登录</a>
                     </router-link>
 
                 </ul>
