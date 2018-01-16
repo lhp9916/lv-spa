@@ -49,16 +49,14 @@
         methods: {
             login() {
                 let formData = {
-                    client_id: '2',
-                    client_secret: 'HraV57TrDC3O3ePv6yXJcEpDJeMOk2S739uzHJLr',
-                    grant_type: 'password',
-                    scope: '',
-                    username: this.email,
+                    email: this.email,
                     password: this.password,
                 }
-                axios.post('/oauth/token', formData).then(response => {
+                axios.post('/api/login', formData).then(response => {
                     //保存 access_token
-                    jwt.setToken(response.data.access_token)
+                    jwt.setToken(response.data.token)
+                }).catch(error => {
+
                 })
             },
         }
