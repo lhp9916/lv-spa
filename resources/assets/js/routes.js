@@ -1,30 +1,59 @@
 import VueRouter from 'vue-router'
+import Store from './store/index'
+import jwtToken from './helpers/jwt'
 
 let routes = [
     {
         path: '/',
-        component: require('./components/pages/Home')
+        component: require('./components/pages/Home'),
+        meta: {}
     }, {
         path: '/about',
-        component: require('./components/pages/About')
+        component: require('./components/pages/About'),
+        meta: {}
     }, {
         path: '/posts/:id',
         name: 'posts',
-        component: require('./components/posts/Post')
+        component: require('./components/posts/Post'),
+        meta: {}
     }, {
         path: '/register',
-        component: require('./components/register/Register')
+        component: require('./components/register/Register'),
+        meta: {}
     }, {
         path: '/confirm',
         name: 'confirm',
-        component: require('./components/comfirm/Email')
-    },{
+        component: require('./components/comfirm/Email'),
+        meta: {}
+    }, {
         path: '/login',
-        component: require('./components/login/Login')
+        name: 'login',
+        component: require('./components/login/Login'),
+        meta: {}
+    }, {
+        path: '/profile',
+        name: 'profile',
+        component: require('./components/user/Profile'),
+        meta: {requiresAuth: true}
     }
 ]
 
-export default new VueRouter({
+const router = new VueRouter({
     mode: 'history',//去掉地址栏中 # 号
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    //是否需要验证登录
+    if (to.meta.requiresAuth) {
+        //判断是否登录
+        if (Store.state.authenticated || jwtToken.getToken()) {
+            return next()
+        } else {
+            return next({name: 'login'})
+        }
+    }
+    next()
+})
+
+export default router

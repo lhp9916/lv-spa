@@ -52,11 +52,9 @@
                     email: this.email,
                     password: this.password,
                 }
-                axios.post('/api/login', formData).then(response => {
-                    //保存 access_token
-                    jwt.setToken(response.data.token)
-                }).catch(error => {
-
+                this.$store.dispatch('loginRequest',formData).then(response => {
+                    //登录后跳转 profile
+                    this.$router.push({name: 'profile'})
                 })
             },
         }

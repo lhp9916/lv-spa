@@ -15,18 +15,32 @@ window.Vue = require('vue');
  */
 import VueRouter from 'vue-router'
 import router from './routes'
+import store from './store/index'
 import App from './components/App'
+import jwtToken from './helpers/jwt'
 
 import zh_CN from './locale/zh_CN';
-import VeeValidate, { Validator } from 'vee-validate';
+import VeeValidate, {Validator} from 'vee-validate';
+
+axios.interceptors.request.use(function (config) {
+    if (jwtToken.getToken()) {
+        config.headers['Authorization'] = 'Bearer ' + jwtToken.getToken()
+    }
+
+    return config
+}, function (error) {
+    return Promise.reject(error)
+})
 
 Validator.localize('zh_CN', zh_CN);
+
 Vue.use(VueRouter)
 Vue.use(VeeValidate)
 
-Vue.component('app',App)
+Vue.component('app', App)
 
 new Vue({
     el: '#app',
-    router
+    router,
+    store
 });
