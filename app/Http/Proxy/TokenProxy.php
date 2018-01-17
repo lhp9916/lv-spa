@@ -33,7 +33,7 @@ class TokenProxy
         return response()->json([
             'token'      => $token['access_token'],
             'expires_in' => $token['expires_in'],
-        ])->cookie('refresh_token', $token['refresh_token'], 86400, null, null, false, true);
+        ])->cookie('refresh_token', $token['refresh_token'], 14400, null, null, false, true);
     }
 
     public function login($email, $password)

@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
     //是否需要验证登录
     if (to.meta.requiresAuth) {
         //判断是否登录
-        if (Store.state.authenticated || jwtToken.getToken()) {
+        if (Store.state.AuthUser.authenticated || jwtToken.getToken()) {
             return next()
         } else {
             return next({name: 'login'})
@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
     }
     if (to.meta.requiresGuest) {
         //判断是否登录
-        if (Store.state.authenticated || jwtToken.getToken()) {
+        if (Store.state.AuthUser.authenticated || jwtToken.getToken()) {
             return next({'name':'index'})
         } else {
             return next()
