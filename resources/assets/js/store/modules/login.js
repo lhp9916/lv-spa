@@ -1,8 +1,9 @@
 import jwt from './../../helpers/jwt'
+import * as types from "../mutation-type";
 
 export default {
-    actions:{
-        loginRequest({dispatch},formData){
+    actions: {
+        loginRequest({dispatch}, formData) {
             return axios.post('/api/login', formData).then(response => {
                 //保存 access_token
                 jwt.setToken(response.data.token)
@@ -11,6 +12,13 @@ export default {
             }).catch(error => {
 
             })
+        },
+        logoutRequest({dispatch}) {
+            return axios.post('/api/logout').then(response => {
+                jwt.removeToken()
+                dispatch('unsetUser')
+            })
+
         }
     }
 }

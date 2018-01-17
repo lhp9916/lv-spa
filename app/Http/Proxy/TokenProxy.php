@@ -50,4 +50,24 @@ class TokenProxy
             'message' => '账户未激活',
         ], 421);
     }
+
+    public function logout()
+    {
+        $user = auth()->guard('api')->user();
+        $accessToken = $user->token();
+
+        app('db')->table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true,
+            ]);
+
+        app('cookie')->forget('refresh_token');
+
+        $accessToken->revoke();
+
+        return response()->json([
+            'message' => 'Logout',
+        ], 204);
+    }
 }
