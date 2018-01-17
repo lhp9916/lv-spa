@@ -36,8 +36,6 @@
 </template>
 
 <script>
-    import JwtToken from './../../helpers/jwt'
-    import jwt from "../../helpers/jwt";
 
     export default {
         data() {
@@ -48,13 +46,18 @@
         },
         methods: {
             login() {
-                let formData = {
-                    email: this.email,
-                    password: this.password,
-                }
-                this.$store.dispatch('loginRequest',formData).then(response => {
-                    //登录后跳转 profile
-                    this.$router.push({name: 'profile'})
+                //验证通过才能提交表单
+                this.$validator.validateAll().then(result => {
+                    if (result) {
+                        let formData = {
+                            email: this.email,
+                            password: this.password,
+                        }
+                        this.$store.dispatch('loginRequest', formData).then(response => {
+                            //登录后跳转 profile
+                            this.$router.push({name: 'profile'})
+                        })
+                    }
                 })
             },
         }

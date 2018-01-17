@@ -11,8 +11,15 @@
 
 <script>
     import TopMenu from './common/TopMenu'
+    import JwtToken from './../helpers/jwt'
 
     export default {
+        //每次刷新时（重新创建）检测本地是否有token，有就去请求api加载用户数据
+        created() {
+            if(JwtToken.getToken()){
+                this.$store.dispatch('setAuthUser')
+            }
+        },
         components: {
             TopMenu
         }

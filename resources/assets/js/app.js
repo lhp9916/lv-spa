@@ -22,6 +22,7 @@ import jwtToken from './helpers/jwt'
 import zh_CN from './locale/zh_CN';
 import VeeValidate, {Validator} from 'vee-validate';
 
+//每次请求都携带token
 axios.interceptors.request.use(function (config) {
     if (jwtToken.getToken()) {
         config.headers['Authorization'] = 'Bearer ' + jwtToken.getToken()
