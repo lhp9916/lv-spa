@@ -12,12 +12,17 @@
 <script>
     import TopMenu from './common/TopMenu'
     import JwtToken from './../helpers/jwt'
+    import Cookie from 'js-cookie'
 
     export default {
         //每次刷新时（重新创建）检测本地是否有token，有就去请求api加载用户数据
         created() {
-            if(JwtToken.getToken()){
+            if (JwtToken.getToken()) {
                 this.$store.dispatch('setAuthUser')
+            } else {
+                if (Cookie.get('auth_id')) {
+                    this.$store.dispatch('refreshToken')
+                }
             }
         },
         components: {

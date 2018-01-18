@@ -33,6 +33,7 @@ class TokenProxy
         return response()->json([
             'token'      => $token['access_token'],
             'expires_in' => $token['expires_in'],
+            'auth_id'    => md5($token['access_token']),
         ])->cookie('refresh_token', $token['refresh_token'], 14400, null, null, false, true);
     }
 
@@ -69,5 +70,14 @@ class TokenProxy
         return response()->json([
             'message' => 'Logout',
         ], 204);
+
+    }
+
+    public function refresh()
+    {
+        $refreshToken = request()->cookie('refresh_token');
+        return $this->proxy('refresh_token', [
+            'refresh_token' => $refreshToken,
+        ]);
     }
 }
