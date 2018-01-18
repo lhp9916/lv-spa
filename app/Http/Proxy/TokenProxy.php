@@ -55,17 +55,20 @@ class TokenProxy
     public function logout()
     {
         $user = auth()->guard('api')->user();
-        $accessToken = $user->token();
+        if ($user) {
+            $accessToken = $user->token();
 
-        app('db')->table('oauth_refresh_tokens')
-            ->where('access_token_id', $accessToken->id)
-            ->update([
-                'revoked' => true,
-            ]);
+            app('db')->table('oauth_refresh_tokens')
+                ->where('access_token_id', $accessToken->id)
+                ->update([
+                    'revoked' => true,
+                ]);
 
-        app('cookie')->forget('refresh_token');
+            $accessToken->revoke();
+        }
 
-        $accessToken->revoke();
+        //删除 cookie
+        app('cookie')->queue(app('cookie')->forget('refresh_token'));
 
         return response()->json([
             'message' => 'Logout',
