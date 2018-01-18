@@ -9,8 +9,6 @@ export default {
                 jwt.setToken(response.data.token)
 
                 dispatch('setAuthUser')
-            }).catch(error => {
-
             })
         },
         logoutRequest({dispatch}) {
